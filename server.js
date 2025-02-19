@@ -7,7 +7,10 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://meeting-place-finder.vercel.app']
+  origin: ['http://localhost:3000', 'https://meeting-place-finder.vercel.app', 'https://meeting-place-finder-devco01.vercel.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 app.use(express.json());
 
