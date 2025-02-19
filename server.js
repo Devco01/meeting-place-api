@@ -11,6 +11,17 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Route racine
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Meeting Place API is running',
+    endpoints: {
+      places: '/api/places',
+      auth: '/api/auth'
+    }
+  });
+});
+
 // Routes
 const authRoutes = require('./routes/auth');
 const placesRoutes = require('./routes/places');
