@@ -5,13 +5,14 @@ const mongoose = require('mongoose');
 
 const app = express();
 
-// Middleware
+// Configuration CORS améliorée
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://meeting-place-finder.vercel.app', 'https://meeting-place-finder-devco01.vercel.app'],
+  origin: ['http://localhost:3000', 'https://meeting-place-finder.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  credentials: false // Changé à false car nous n'utilisons pas de cookies
 }));
+
 app.use(express.json());
 
 // Route racine
@@ -40,5 +41,18 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log('Connecté à MongoDB'))
 .catch(err => console.error('Erreur de connexion à MongoDB:', err));
 
-// Pour Vercel
+// Ajout d'un gestionnaire d'erreurs global
+app.use((err, req, res, next) => {
+  console.error('Erreur:', err);
+  res.status(500).json({ 
+    message: 'Une erreur est survenue',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Serveur démarré sur le port ${PORT}`);
+});
+
 module.exports = app;
