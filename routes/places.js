@@ -150,4 +150,23 @@ router.get('/details', async (req, res) => {
   }
 });
 
+router.post('/search', async (req, res) => {
+  try {
+    const { location, name, placeId } = req.body;
+    
+    // Appel à l'API Google Places
+    const response = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json`, {
+      params: {
+        place_id: placeId,
+        key: process.env.GOOGLE_MAPS_API_KEY
+      }
+    });
+
+    res.json(response.data.result);
+  } catch (error) {
+    console.error('Erreur serveur:', error);
+    res.status(500).json({ error: 'Erreur lors de la recherche de lieux' });
+  }
+});
+
 module.exports = router;
